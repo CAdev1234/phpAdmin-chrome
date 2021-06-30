@@ -26,7 +26,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <body>
 	<!-- menu -->
 	<div class="nav-side-menu">
-		<div class="brand"><a href='' >Dashboard</a></div>
+		<div class="brand"><a href=''>Dashboard</a></div>
 		<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 			<div class="menu-list">
 				<ul id="menu-content" class="menu-content collapse out">
@@ -48,15 +48,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 		 </div>
 	</div>
 	<div class="main">
-		<div class="" style="background-color: white;border-radius: 10px;padding:20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-			<h2>User Statistic By Country</h2>
-			<div id="countryChart"></div>
-		</div>
+		<div style="padding: 20px;">
+			<div class="" style="background-color: white;border-radius: 10px;padding:20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+				<h2>User Statistic By Country</h2>
+				<div id="countryChart"></div>
+			</div>
 
-		<div class="" style="background-color: white;border-radius: 10px;margin-top:30px;padding:20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-			<h2>User Online Percent</h2>
-			<div id="onlineChart"></div>
+			<div class="" style="background-color: white;border-radius: 10px;margin-top:30px;padding:20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+				<h2>User Online Percent</h2>
+				<div id="onlineChart"></div>
+			</div>
 		</div>
+		
 	</div>
 	<!-- Styles -->
 	<style>

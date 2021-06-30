@@ -159,11 +159,83 @@ body {
   font-size: 20px;
   cursor: pointer;
 }
+.bg-b-green {
+  background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+.bg-b-yellow {
+  background: linear-gradient(45deg, #ffb64d, #ffcb80);
+}
+.bg-b-blue {
+  background: linear-gradient(45deg, #4099ff, #73b4ff);
+}
+.bg-b-pink {
+  background: linear-gradient(45deg, #ff5370, #ff869a);
+}
+.info-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 140px;
+  width: 100%;
+  box-shadow: 0 5px 20px rgb(0 0 0 / 10%);
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.info-box-content {
+  padding: 10px 10px 10px 0;
+  margin-left: 30px;
+  width: 70%;
+}
+.info-box-icon {
+  float: left;
+  height: 70px;
+  width: 70px;
+  text-align: center;
+  font-size: 30px;
+  line-height: 74px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.info-box-icon i {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.info-box-text, .progress-description {
+  display: block;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 400;
+}
+.info-box .progress {
+  background: rgba(0, 0, 0, 0.2);
+  margin: 5px 0px;
+  height: 5px;
+}
+.info-box .progress .progress-bar {
+  background: #fff;
+}
+.info-box-number {
+  font-weight: 300;
+  font-size: 21px;
+}
+.state-overview {
+  color: #fff;
+}
 #wrap {
   background: white;
   padding: 10px 30px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+div.client_data_table div.dataTables_wrapper {
+  overflow-x: auto;
+  min-width: 500px;
 }
 @media (max-width: 767px) {
     .main {
