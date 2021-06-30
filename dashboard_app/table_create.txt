@@ -1,0 +1,39 @@
+CREATE TABLE `accounts_test` (
+   `id` int NOT NULL AUTO_INCREMENT,
+   `username` varchar(50) NOT NULL,
+   `password` varchar(255) NOT NULL,
+   `email` varchar(100) NOT NULL,
+   `phone` varchar(45) DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `client_data_tb_test` (
+   `id` int NOT NULL AUTO_INCREMENT,
+   `ip_address` varchar(45) DEFAULT NULL,
+   `last_connect` varchar(255) DEFAULT NULL,
+   `current_website` varchar(255) DEFAULT NULL,
+   `time_spending` varchar(255) DEFAULT NULL,
+   `country` varchar(255) DEFAULT NULL,
+   `screenshot` varchar(255) DEFAULT NULL,
+   `latitude` varchar(45) DEFAULT NULL,
+   `longitude` varchar(45) DEFAULT NULL,
+   `user_identity` varchar(45) DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `id_UNIQUE` (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `client_tb` (
+   `id` bigint NOT NULL AUTO_INCREMENT,
+   `identity` varchar(255) DEFAULT NULL,
+   `last_activity` varchar(255) DEFAULT NULL,
+   `latitude` varchar(45) DEFAULT NULL,
+   `longitude` varchar(45) DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `id_UNIQUE` (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
