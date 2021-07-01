@@ -75,7 +75,7 @@ CREATE TABLE `client_data_tb` (
 
 LOCK TABLES `client_data_tb` WRITE;
 /*!40000 ALTER TABLE `client_data_tb` DISABLE KEYS */;
-INSERT INTO `client_data_tb` VALUES (139,'149.7.16.128','6/30/2021, 1:55:00 AM','www.demoserver.live','0 hours and 0 minutes, 3 seconds','GB','/upload/image/9121f16f-be86-4ae2-babe-5cc805f2316c.png','51.5085','-0.1257','149.7.16.128','2021-06-29 19:55:00','2021-06-29 19:55:00'),(141,'2.21.171.46','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','PT','/upload/image/6b0f2550-617f-4aec-b403-2b50ebf13a10.png','39.5','-8','2.21.171.46','2021-06-29 16:54:26','2021-06-29 16:54:26'),(142,'2.16.36.102','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','AU','/upload/image/6b0f2550-617f-4aec-b403-2b50ebf13a10.png','-27','133','2.16.36.102','2021-06-29 16:54:26','2021-06-29 16:54:26'),(143,'2.16.130.134','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','BE','/upload/image/6b0f2550-617f-4aec-b403-2b50ebf13a10.png','50.8333','4','2.16.130.134','2021-06-29 16:54:26','2021-06-29 16:54:26'),(144,'23.208.167.0','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','GD','/upload/image/6b0f2550-617f-4aec-b403-2b50ebf13a10.png','12.1167','-61.6667','23.208.167.0','2021-06-29 16:54:26','2021-06-29 16:54:26');
+INSERT INTO `client_data_tb` VALUES (139,'149.7.16.128','2021-07-01 15:47:51','www.linkedin.com','0 hours and 0 minutes, 7 seconds','GB','/upload/image/28.png','51.5085','-0.1257','149.7.16.128','2021-07-01 15:47:51','2021-07-01 15:47:51'),(141,'2.21.171.46','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','PT','/upload/image/29.png','39.5','-8','2.21.171.46','2021-06-29 16:54:26','2021-06-29 16:54:26'),(142,'2.16.36.102','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','AU','/upload/image/30.png','-27','133','2.16.36.102','2021-06-29 16:54:26','2021-06-29 16:54:26'),(143,'2.16.130.134','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','BG','/upload/image/31.png','50.8333','4','2.16.130.134','2021-06-29 16:54:26','2021-06-29 16:54:26'),(144,'23.208.167.0','6/29/2021, 10:54:26 PM','www.demoserver.live','0 hours and 0 minutes, 1 seconds','GD','/upload/image/32.png','12.1167','-61.6667','23.208.167.0','2021-06-29 16:54:26','2021-06-29 16:54:26');
 /*!40000 ALTER TABLE `client_data_tb` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,6 +92,7 @@ CREATE TABLE `client_tb` (
   `last_activity` varchar(255) DEFAULT NULL,
   `latitude` varchar(45) DEFAULT NULL,
   `longitude` varchar(45) DEFAULT NULL,
+  `country_code` varchar(45) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -105,7 +106,7 @@ CREATE TABLE `client_tb` (
 
 LOCK TABLES `client_tb` WRITE;
 /*!40000 ALTER TABLE `client_tb` DISABLE KEYS */;
-INSERT INTO `client_tb` VALUES (28,'149.7.16.128','2021-06-29 21:21:32','51.5085','-0.1257','2021-06-27 23:31:03','2021-06-29 19:55:00'),(29,'2.21.171.46','2021-06-29 16:54:22','39.5','-8','2021-06-29 11:01:15','2021-06-29 16:53:08'),(30,'2.16.36.102','2021-06-29 19:03:45','-27','133','2021-06-27 23:31:03','2021-06-29 16:54:26'),(31,'2.16.130.134','2021-06-29 16:54:22','50.8333','4','2021-06-29 11:01:15','2021-06-29 16:53:08'),(32,'23.208.167.0','2021-06-29 16:54:22','12.1167','-61.6667','2021-06-29 11:01:15','2021-06-29 16:53:08');
+INSERT INTO `client_tb` VALUES (28,'149.7.16.128','2021-07-01 15:48:14','51.5085','-0.1257','GB','2021-06-27 23:31:03','2021-07-01 15:47:51'),(29,'2.21.171.46','2021-06-29 16:54:22','39.5','-8','PT','2021-06-29 11:01:15','2021-06-29 16:53:08'),(30,'2.16.36.102','2021-06-29 19:03:45','-27','133','AU','2021-06-27 23:31:03','2021-06-29 16:54:26'),(31,'2.16.130.134','2021-06-29 16:54:22','50.8333','4','BG','2021-06-29 11:01:15','2021-06-29 16:53:08'),(32,'23.208.167.0','2021-06-29 16:54:22','12.1167','-61.6667','GD','2021-06-29 11:01:15','2021-06-29 16:53:08');
 /*!40000 ALTER TABLE `client_tb` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,4 +145,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-30  3:21:32
+-- Dump completed on 2021-07-01 21:48:14

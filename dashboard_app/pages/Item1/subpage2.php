@@ -6,6 +6,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 	header("location: index.php");
 	exit;
 }
+
 ?>
 
 
@@ -25,6 +26,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>
 	<!-- menu -->
+	
 	<div class="nav-side-menu">
 		<div class="brand"><a href='' >Dashboard</a></div>
 		<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
@@ -41,7 +43,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 						</a>
 					</li>
 					<ul class="sub-menu collapse" id="ajuda">
-						<li><a id="subpage1" href="statistic.php" >Item1</a></li>
+						<li><a id="subpage1" href="statistic.php" >Statistic</a></li>
 						<li><a id="subpage2" href="" >Item2</a></li>
 					</ul>
 				</ul>

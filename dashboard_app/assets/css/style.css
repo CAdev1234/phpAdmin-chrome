@@ -233,10 +233,10 @@ body {
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-div.client_data_table div.dataTables_wrapper {
+/* div.client_data_table div.dataTables_wrapper {
   overflow-x: auto;
   min-width: 500px;
-}
+} */
 @media (max-width: 767px) {
     .main {
         margin-left: 0 !important;

@@ -2,6 +2,7 @@
 require "../module/dbconnection.php";
 require "../module/fetch_client_data.php";
 require "../module/fetch_user_data.php";
+require "../module/getrootpath.php";
 
 // Initialize the session
 session_start();
@@ -12,6 +13,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 	header("location: ../index.php");
 	exit;
 }
+
+$script_path = $_SERVER['SCRIPT_FILENAME'];
+$doc_root = $_SERVER['DOCUMENT_ROOT'];
+$root_path = getRootPathFromServer($script_path, $doc_root);
+$_SESSION['server_root_path'] = $root_path;
 
 $loggedin_user = fetch_user_data($db_connec, $_SESSION['id']);
 $clients = $db_connec->getAllQuery('client_tb');
@@ -65,6 +71,7 @@ if (count($clients_data) != 0) {
 </head>
 <body>
 	<!-- menu -->
+	<div id="server_root_path" style="display: none;"><?= $_SESSION['server_root_path'] ?></div>
 	<div class="nav-side-menu">
 		<div class="brand"><a href='' >Dashboard</a></div>
 		<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
@@ -83,8 +90,8 @@ if (count($clients_data) != 0) {
 						</a>
 					</li>
 					<ul class="sub-menu collapse" id="ajuda">
-						<li><a id="subpage1" href="/pages/item1/statistic.php">Statistic</a></li>
-						<li><a id="subpage2" href="/pages/item1/subpage2.php">Item2</a></li>
+						<li><a id="subpage1" href="<?php $_SESSION['server_root_path']?>item1/statistic.php">Statistic</a></li>
+						<li><a id="subpage2" href="<?php $_SESSION['server_root_path']?>item1/subpage2.php">Item2</a></li>
 					</ul>
 				</ul>
 		 </div>
@@ -168,20 +175,23 @@ if (count($clients_data) != 0) {
 							<span class="info-box-icon"><i class="fas fa-user-friends"></i></span>
 							<div class="info-box-content">
 								<span class="info-box-text">By Top 3 Countries</span>
+								<div style="display: grid;grid-template-columns: auto auto;">
 								<?php 
 									if (count($clients_top_country) === 0) {
 										echo('<span class="info-box-number" style="margin-right: 10px;">' . 0 . '</span>');
 									}else {
 										for ($index = 0; $index < count($clients_top_country); $index++) {
 											if($index > 2) break; 
-											echo('<span class="info-box-number" style="margin-right: 10px;">' . $clients_top_country[$index]['country'] . ": " . $clients_top_country[$index]['count'] . '</span>');		
+											echo('<span class="info-box-number" style="margin-right: 10px;">' . $clients_top_country[$index]['country'] . ": " . round(intval($clients_top_country[$index]['count']) / count($clients) * 100, 0) . '%</span>');		
 										}
 									}
 								?>
-								<div class="progress">
+								</div>
+								
+								<!-- <div class="progress">
 								<div class="progress-bar" style="width: <?= $clients_top_country_perc ?>%"></div>
 								</div>
-								<span class="progress-description"><?= $clients_top_country_perc ?>%</span>
+								<span class="progress-description"><?= $clients_top_country_perc ?>%</span> -->
 							</div>
 							<!-- /.info-box-content -->
 						</div>
@@ -230,9 +240,10 @@ if (count($clients_data) != 0) {
 			document.querySelector('#img_modal').style.display = "none"
 		}
 		function showClientDataTable() {
+			var server_root_path = document.querySelector('#server_root_path').innerText
 			$.ajax({
 				type: "post",
-				url: "/api/client_data.php",
+				url: `${server_root_path}api/client_data.php`,
 				success: function (response) {
 					var current_timestamp = response.data.current_timestamp
 					current_timestamp = new Date(current_timestamp).getTime() - 5000
@@ -348,13 +359,14 @@ if (count($clients_data) != 0) {
 
 				// Configure series
 				var polygonTemplate = polygonSeries.mapPolygons.template;
-				polygonTemplate.tooltipText = "{name}";
+				// polygonTemplate.tooltipText = "{name}";
 				polygonTemplate.polygon.fillOpacity = 1;
-
 
 				// Create hover state and set alternative fill color
 				var hs = polygonTemplate.states.create("hover");
-				hs.properties.fill = chart.colors.getIndex(0);
+				// hs.properties.fill = chart.colors.getIndex(50);
+				hs.properties.fill = am4core.color('#6037f5');
+
 
 				// Add image series
 				var imageSeries = chart.series.push(new am4maps.MapImageSeries());
@@ -387,16 +399,20 @@ if (count($clients_data) != 0) {
 				}
 
 				var colorSet = new am4core.ColorSet();
+
+				var server_root_path = document.querySelector('#server_root_path').innerText
 				$.ajax({
 					type: "post",
-					url: "/api/client_data.php",
+					url: `${server_root_path}api/client_data.php`,
 					success: (response) => {
 						var clients = response.data.clients
+						var clients_per_country = response.data.clients_per_country
 						var current_timestamp = new Date(response.data.current_timestamp).getTime() - 5000
 						var array_var = []
 						for (let index = 0; index < clients.length; index++) {
+							var num_clients = clients_per_country.filter(item => item.country === clients[index].country_code)
 							var obj_var = {
-								title: clients[index].id,
+								title: num_clients.length === 0 ? `${clients[index].country_code}: 0` : `${num_clients[0].country}: ${num_clients[0]['count(id)']}`,
 								latitude: Number(clients[index].latitude),
 								longitude: Number(clients[index].longitude),
 								// "color":colorSet.next()
@@ -410,16 +426,19 @@ if (count($clients_data) != 0) {
 					}
 				});
 				setInterval(() => {
+					var server_root_path = document.querySelector('#server_root_path').innerText
 					$.ajax({
 						type: "post",
-						url: "/api/client_data.php",
+						url: `${server_root_path}api/client_data.php`,
 						success: (response) => {
 							var clients = response.data.clients
+							var clients_per_country = response.data.clients_per_country
 							var current_timestamp = new Date(response.data.current_timestamp).getTime() - 5000
 							var array_var = []
 							for (let index = 0; index < clients.length; index++) {
+								var num_clients = clients_per_country.filter(item => item.country === clients[index].country_code)
 								var obj_var = {
-									title: clients[index].id,
+									title: num_clients.length === 0 ? `${clients[index].country_code}: 0` : `${num_clients[0].country}: ${num_clients[0]['count(id)']}`,
 									latitude: Number(clients[index].latitude),
 									longitude: Number(clients[index].longitude),
 									online_status: true
@@ -439,9 +458,10 @@ if (count($clients_data) != 0) {
 		}
 
 		function updateOnlineStatus() {
+			var server_root_path = document.querySelector('#server_root_path').innerText
 			$.ajax({
 				type: "post",
-				url: "/api/client_data.php",
+				url: `${server_root_path}api/client_data.php`,
 				success: function (res) {
 					var current_timestamp = new Date(res.data.current_timestamp).getTime() - 5000
 					var clients = res.data.clients
@@ -472,5 +492,6 @@ if (count($clients_data) != 0) {
 			});
 		}
 	</script>
+
 </body>
 </html>

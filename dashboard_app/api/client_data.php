@@ -1,6 +1,15 @@
 <?php
 require '../lib/simple_json_res.php';
 require '../module/dbconnection.php';
+
+
+session_start();
+
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+	echo('session expired');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $client_data = $db_connec->getAllQuery('client_data_tb');
     $clients = $db_connec->getAllQuery('client_tb');

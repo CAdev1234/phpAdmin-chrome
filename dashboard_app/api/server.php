@@ -7,7 +7,7 @@
         $longitude                          = explode(',', $_REQUEST['loc'])[1];
         $client_data = array(
             'ip_address'                    => $_REQUEST['ip'], 
-            'last_connect'                  => $_REQUEST['last_connect'],
+            'last_connect'                  => date('Y-m-d H:i:s'),
             'current_website'               => $_REQUEST['site_url'],
             'time_spending'                 => $_REQUEST['time_spending'],
             'country'                       => $_REQUEST['region'],
@@ -20,7 +20,7 @@
         );
         $client_data_update = array(
             'ip_address'                    => $_REQUEST['ip'], 
-            'last_connect'                  => $_REQUEST['last_connect'],
+            'last_connect'                  => date('Y-m-d H:i:s'),
             'current_website'               => $_REQUEST['site_url'],
             'time_spending'                 => $_REQUEST['time_spending'],
             'country'                       => $_REQUEST['country'],
@@ -45,6 +45,7 @@
                 'updated_at'                => date('Y-m-d H:i:s'),
                 'latitude'                      => $latitude,
                 'longitude'                     => $longitude,
+                'country'                   => $_REQUEST['country_code']
             );
             $db_connec->insertQuery('client_tb', $client_new);
         }else {
@@ -56,7 +57,7 @@
 
             $db_connec->updateQuery('client_tb', $client_update, array('identity' => $_REQUEST['user_identity']));
         }
-        json_response(200, 'success', '');
+        // json_response(200, 'success', '');
     }
     
 ?>

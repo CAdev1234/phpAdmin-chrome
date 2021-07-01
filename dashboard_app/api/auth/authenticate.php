@@ -26,18 +26,17 @@ if ($stmt = $db_connec->connec->prepare('SELECT id, password FROM accounts WHERE
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['name'] = $_POST['username'];
             $_SESSION['id'] = $id;
-            // echo 'Welcome ' . $_SESSION['name'] . '!';
             header("Location: ../../pages/dashboard.php");
         } else {
             // Incorrect password
             header("Location: ../../index.php");
             echo 'Incorrect username and/or password!';
-            header("Location: ../../pages/dashboard.php");
+            header("Location: ../../index.php");
         }
     } else {
         // Incorrect username
         echo 'Incorrect username and/or password!';
-        header("Location: ../../pages/dashboard.php");
+        header("Location: ../../index.php");
     }
     $stmt->close();
 }
